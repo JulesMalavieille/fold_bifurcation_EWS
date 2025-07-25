@@ -4,25 +4,25 @@ Created on Mon Jun  3 13:53:24 2024
 @author: Jules Malavieille
 """
 
-# Résoudre une équation différentielle stochastique avec le schéma d'Euler-Maruyama 
+# Solving stochastical differential equation by Euler-Maruyama and Milsetin scheme 
 # Equation : dX = a*X*dt + b*X*dW
 
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-""" Inititalisation des paramètres """
-a = 2       # Paramètre du modèle
-b = 0.15      # Paramètre du modèle
+""" Parameters """
+a = 2       
+b = 0.15      
 
 tmax = 100
 nbval = 1000
-R = 4       # Nombre de pas de temps pour la méthode de Wiener  
+R = 4       # number of time steps for Wiener process  
 L = nbval/R
 N = 2**9
 dt = 1/N
 
 
-""" Génération du bruit """
+""" Wiener process """
 def bruit():
     B = []
     for i in range(nbval):
@@ -31,7 +31,7 @@ def bruit():
     return B
     
 
-""" Solution analytique test """ 
+""" Analytic solution """ 
 def func(W):
     X =[]
     X0 = 1
@@ -41,7 +41,7 @@ def func(W):
     return X
         
 
-""" Schéma de Euler-Maruyama """
+""" Euler-Maruyama Scheme """
 def EulerMaruyama(B):
     R = 4
     Dt = R*dt
@@ -57,7 +57,7 @@ def EulerMaruyama(B):
     return E
 
 
-""" Schéma de Milstein """
+""" Milstein Scheme """
 def Milstein(B):
     X0 = 1
     R = 1
