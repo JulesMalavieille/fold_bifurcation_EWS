@@ -4,7 +4,7 @@ Created on Thu Jun  6 10:26:09 2024
 @author: Jules Malavieille
 """
 
-# Résolution du modèle : dX = rX(1-X/K) - (X**2/(1+X**2))dW
+# Model : dX = rX(1-X/K) - (X**2/(1+X**2))dW
 
 import numpy as np
 import matplotlib.pyplot as plt 
@@ -21,7 +21,7 @@ tmax = int(dt*nbval)
 coef = 1
 
 
-""" Génération du bruit """
+""" Wiener process """
 def bruit():
     B = []
     for i in range(nbval):
@@ -30,7 +30,7 @@ def bruit():
     return B
     
 
-""" Schéma de Milstein """
+""" Milsetin Scheme """
 def Milstein(B):
     X0 = 4
     R = 1
@@ -45,7 +45,7 @@ def Milstein(B):
     return Xtemp
 
 
-""" Schéma de Milstein deterministe """
+""" Milstein scheme determinist """
 def Milstein_det(B):
     X0 = 4
     R = 1
@@ -57,7 +57,7 @@ def Milstein_det(B):
     return Xtemp
 
 
-""" Schéma de Milstein avec variation de paramètre"""
+""" Milstein Scheme with one variable parameter """
 def Milstein_param(B):
     X0 = 8
     R = 1
@@ -76,27 +76,9 @@ def Milstein_param(B):
             r = 0
         rL.append(r)
     return Xtemp, rL
-    
-
-""" Schéma de milstein pour un modèle deterministe"""
-def Milstein_param_deterministe(B):
-    X0 = 8
-    R = 1
-    Xtemp = [X0]
-    Dt = R*dt
-    r = 1
-    rL = [r]
-    for j in range(nbval-1):
-        X = Xtemp[j] + Dt*(rL[j]*Xtemp[j]*(1-Xtemp[j]/K) - Xtemp[j]**2/(1+Xtemp[j]**2)) 
-        Xtemp.append(X)
-        r -= 0.000002
-        if r < 0:
-            r = 0
-        rL.append(r)
-    return Xtemp, rL
 
 
-""" Tronquer une liste"""
+""" cut a serie """
 def cut_L(L, x):
     L_cut = []
     i = 0
@@ -110,7 +92,7 @@ def cut_L(L, x):
         
     
 
-""" Partie du modèle f et g """
+""" deterministc and stochastocal part of the model """
 def f(X):
     Y = []
     for x in X:
@@ -127,7 +109,7 @@ def g(X):
     return Y
 
 
-""" calcul de r et K """
+""" calculus of r and K """
 def r_calc(X):
     Y = []
     for x in X:
@@ -161,7 +143,7 @@ rL = r_calc(X)
 KL = K_calc(X)
 
 
-""" Modèle en fonction du temps"""
+""" Model as a function of time """
 # plt.figure(1)
 # plt.plot(t, E, label="Modèle détérministe") 
 # plt.plot(t, E_det, label="Modèle stochastique")
@@ -172,7 +154,7 @@ KL = K_calc(X)
 # plt.legend()
 
 
-""" Portrait de phase de f et g """
+""" Phase portrait of f and g """
 # plt.figure(2)
 # plt.plot(Xp, f, label="f(x)")
 # plt.plot(Xp, g, label="g(x)")
@@ -184,7 +166,7 @@ KL = K_calc(X)
 # plt.legend()
 
 
-""" Diagramme de r en fonction de K """
+""" Diagramme of K(r) """
 # plt.figure(3)
 # plt.plot(KL, rL)
 # plt.title("Diagramme de r en fonction de K", fontsize=18)
@@ -211,7 +193,7 @@ KL = K_calc(X)
 #             t += 1
         
      
-""" Modélisation régime shift """
+""" Shift modelisation """
 for i in range(1):
     B = bruit()
     E = Milstein(B)
@@ -232,7 +214,7 @@ for i in range(1):
 # plt.grid()
     
 
-""" X réplicats du modèle avec r variable """  # Attention demande beaucoup de puissance de calcul ou de temps
+""" replicate the model with r variable """  # Attention demande beaucoup de puissance de calcul ou de temps
 # div = 1000  # Facteur par lequel on tronque la serie 
 # rep = 1000 # Pour nbval = 500 000; N = 2**8; b = 0.15; r = 1 - 0.000002
 # it = 0
@@ -244,7 +226,8 @@ for i in range(1):
 #     M[:, i] = E_rr
 #     it += 1
 #     print(it)
-    
+
+""" Create a csv file with simulations """
 # nom = "matrice.csv"
 
 # with open(nom, mode='w', newline='') as fichier_csv:
